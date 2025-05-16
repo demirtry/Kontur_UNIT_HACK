@@ -1,14 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+from db_func import get_db_connection, create_table_users
 import uuid
 import secrets
 
 app = Flask(__name__)
 
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+# def get_db_connection():
+#     conn = sqlite3.connect('database.db')
+#     conn.row_factory = sqlite3.Row
+#     return conn
 
 @app.route('/')
 def index():
@@ -20,6 +21,7 @@ def register():
         user_id = str(uuid.uuid4())[:8]
         secret_code = secrets.token_hex(4)
 
+        create_table_users()
         conn = get_db_connection()
         conn.execute('INSERT INTO users (user_id, secret_code) VALUES (?, ?)',
                      (user_id, secret_code))
