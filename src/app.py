@@ -113,7 +113,7 @@ def process_click(cell_id):
 #     })
 
 
-@app.route('/start_game')
+@app.route('/game')
 def start_game():
     user_id = get_user_id_this_session()
     game = load_game(user_id)

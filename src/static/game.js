@@ -6,8 +6,7 @@ const ITEM_TYPES = {
 };
 
 async function startGame() {
-    const response = await fetch('/start_game');
-//    функция Отобразить ячейки
+    const response = await fetch('/game');
 
 }
 async function show_progress() {
