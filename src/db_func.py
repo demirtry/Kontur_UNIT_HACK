@@ -51,21 +51,6 @@ def update_user_score(user_id, user_score):
     conn.close()
 
 
-# def update_user_score(user_id, user_score):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#
-#     cursor.execute(
-#         '''
-#         UPDATE users
-#         SET score = ?
-#         WHERE user_id = ?
-#         ''', (user_score, user_id))
-#
-#     conn.commit()
-#     conn.close()
-
-
 def get_top_leaders():
     conn = get_db_connection()
     cursor = conn.cursor()
