@@ -1,7 +1,8 @@
 import json
 
 from flask import Flask, render_template, request, session, make_response
-from db_func import create_table_users, add_user, update_user_score, get_top_leaders, get_db_connection
+# from db_func import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
+from db_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
 from game.game import Game
 import secrets
 from flask import jsonify
@@ -41,15 +42,8 @@ def register():
                 secret_code = secrets.token_hex(4)
             secret_codes.add(secret_code)
 
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM users WHERE user_id = ?', (user_id,))
-            user_exists = cursor.fetchone()
-            conn.close()
-
+            user_exists = check_user_exist(user_id)
             if not user_exists:
-
-                create_table_users()
                 add_user(user_id, secret_code)
         else:
             secret_code = secrets.token_hex(4)
@@ -62,7 +56,6 @@ def register():
                 user_id = secrets.token_hex(4)
             user_ids.add(user_id)
 
-            create_table_users()
             add_user(user_id, secret_code)
 
         session["user_id"] = user_id
@@ -158,4 +151,5 @@ def leaderboard():
 
 
 if __name__ == '__main__':
+    create_table_users()
     app.run(debug=True)
