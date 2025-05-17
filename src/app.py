@@ -23,13 +23,14 @@ def get_user_id_this_session():
     user_id = session["user_id"]
     return user_id
 
+
 def load_game(user_id):
     if games.get(user_id) is None:
         games[user_id] = Game()
 
     return games[user_id]
 
-# Добавить возврат на фронт id пользователя и кодового слова. Убрать возврат страниц
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -72,9 +73,11 @@ def process_click(cell_id):
 def go_to_intro1():
     return render_template('intro_pages/intro1.html')
 
+
 @app.route('/intro2')
 def go_to_intro2():
     return render_template('intro_pages/intro2.html')
+
 
 @app.route('/intro3')
 def go_to_intro3():
@@ -89,18 +92,17 @@ def start_game():
 
     return render_template('game.html',
                            backpack_size=game_state['backpack_size'],
-                           weight_sum=game_state['weight_sum'],  # Изменил initial_weight на weight_sum
-                           treasure_sum=game_state['treasure_sum'],  # Изменил initial_treasure на treasure_sum
+                           weight_sum=game_state['weight_sum'],
+                           treasure_sum=game_state['treasure_sum'],
                            best_treasure=game_state['best_treasure'],
                            selected_ids=game_state['selected_ids'])
+
 
 @app.route('/api/get_items')
 def get_items():
     try:
         with open('game/items.json', 'r', encoding='utf-8') as f:
             items_data = json.load(f)
-
-        # Преобразуем объект в массив
         items_array = [items_data[str(i)] for i in range(len(items_data))]
         return jsonify(items_array)
     except Exception as e:
