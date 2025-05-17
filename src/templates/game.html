@@ -220,10 +220,10 @@
 <script>
   const initialGameState = {
     backpackSize: {{ backpack_size|default(100) }},
-  currentWeight: {{ weight_sum|default(0) }},  // Изменил initial_weight на weight_sum
-  currentTreasure: {{ treasure_sum|default(0) }},  // Изменил initial_treasure на treasure_sum
-  bestTreasure: {{ best_treasure|default(0) }},
-  selectedIds: {{ selected_ids|tojson|default([]) }}
+    currentWeight: {{ weight_sum|default(0) }},  // Изменил initial_weight на weight_sum
+    currentTreasure: {{ treasure_sum|default(0) }},  // Изменил initial_treasure на treasure_sum
+    bestTreasure: {{ best_treasure|default(0) }},
+    selectedIds: {{ selected_ids|tojson|default([]) }}
   };
 
   // Game state
