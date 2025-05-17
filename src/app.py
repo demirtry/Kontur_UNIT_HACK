@@ -1,7 +1,7 @@
 import json
 
-from flask import Flask, render_template, request, session
-from db_func import create_table_users, add_user, update_user_score, get_top_leaders
+from flask import Flask, render_template, request, session, make_response
+from db_func import create_table_users, add_user, update_user_score, get_top_leaders, get_db_connection
 from game.game import Game
 import secrets
 from flask import jsonify
@@ -30,28 +30,50 @@ def load_game(user_id):
 
     return games[user_id]
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    user_id = request.cookies.get('user_id')
+
     if request.method == 'POST':
-        secret_code = secrets.token_hex(4)
-        while secret_code in secret_codes:
+        if user_id:
             secret_code = secrets.token_hex(4)
-        secret_codes.add(secret_code)
+            while secret_code in secret_codes:
+                secret_code = secrets.token_hex(4)
+            secret_codes.add(secret_code)
 
-        user_id = secrets.token_hex(4)
-        while user_id in user_ids:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM users WHERE user_id = ?', (user_id,))
+            user_exists = cursor.fetchone()
+            conn.close()
+
+            if not user_exists:
+
+                create_table_users()
+                add_user(user_id, secret_code)
+        else:
+            secret_code = secrets.token_hex(4)
+            while secret_code in secret_codes:
+                secret_code = secrets.token_hex(4)
+            secret_codes.add(secret_code)
+
             user_id = secrets.token_hex(4)
-        user_ids.add(user_id)
+            while user_id in user_ids:
+                user_id = secrets.token_hex(4)
+            user_ids.add(user_id)
 
-        create_table_users()
-        add_user(user_id, secret_code)
+            create_table_users()
+            add_user(user_id, secret_code)
+
         session["user_id"] = user_id
-        print(session)
+        response = make_response(render_template('registration_success.html',
+                                                 user_id=user_id,
+                                                 secret_code=secret_code))
 
-        return render_template('registration_success.html', user_id=user_id, secret_code=secret_code)
+        response.set_cookie('user_id', user_id, max_age=24*60*60)
+        return response
+
     return render_template('register.html')
-
 
 @app.route('/api/process_click/<int:cell_id>', methods=['POST'])
 def process_click(cell_id):
