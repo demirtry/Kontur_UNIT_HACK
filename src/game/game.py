@@ -1,7 +1,8 @@
 import json
 from pathlib import Path
 
-ITEMS_FILE = Path('game/items.json')
+BASE_DIR = Path(__file__).resolve().parent.parent  # поднимаемся до src/
+ITEMS_FILE = BASE_DIR / 'game' / 'items.json'
 
 
 def load_items():
