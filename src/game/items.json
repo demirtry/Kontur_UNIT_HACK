@@ -102,29 +102,5 @@
   "25": {
     "treasure": 20,
     "weight": 6
-  },
-  "26": {
-    "treasure": 35,
-    "weight": 13
-  },
-  "27": {
-    "treasure": 15,
-    "weight": 12
-  },
-  "28": {
-    "treasure": 6,
-    "weight": 16
-  },
-  "29": {
-    "treasure": 44,
-    "weight": 7
-  },
-  "30": {
-    "treasure": 33,
-    "weight": 11
-  },
-  "31": {
-    "treasure": 14,
-    "weight": 13
   }
 }

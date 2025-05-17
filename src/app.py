@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from db_func import get_db_connection, create_table_users, add_user
+from flask import Flask, render_template, request, session
+from db_func import create_table_users, add_user
 from game.game import Game
-import uuid
 import secrets
 from flask import jsonify
 

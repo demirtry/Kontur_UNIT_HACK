@@ -1,4 +1,3 @@
-// Типы предметов и их визуальное представление
 const ITEM_TYPES = {
     common: {
         color: '#a8a878',
@@ -6,15 +5,31 @@ const ITEM_TYPES = {
     }
 };
 
-// game.js
 async function startGame() {
     const response = await fetch('/start_game');
+//    функция Отобразить ячейки
+
+}
+async function show_progress() {
+    const response = await fetch('/start_game');
+//    функция Отобразить ячейки
 
 }
 
-//// Добавьте другие функции, если нужно
-//
-//
+async function process_click() {
+    const response = await fetch('/process_click');
+//    [снять выделение, выделить, не влезает]
+//    values
+//        values = {
+//        "backpack_size": game.backpack_size,
+//        "treasure_sum": game.matrix.treasure_sum,
+//        "best_treasure": game.best_treasure,
+//        "selected_ids": game.matrix.get_selected_ids()
+    }
+//    функция Отобразить ячейки
+
+}
+
 //async function createGameGrid() {
 //    const response = await fetch('/get_matrix');
 //    const matrix = await response.json();

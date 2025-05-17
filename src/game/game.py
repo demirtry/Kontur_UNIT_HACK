@@ -34,7 +34,6 @@ class Cell:
 
 class Matrix:
     def __init__(self, size_x, size_y):
-        print("alive")
         self.size_x = size_x
         self.size_y = size_y
         self.weight_sum = 0
@@ -43,7 +42,6 @@ class Matrix:
 
         self.cells = []
         items = load_items()
-        print(items, "items")
         item_id = 0
         for j in range(size_y):
             current_cell = []
