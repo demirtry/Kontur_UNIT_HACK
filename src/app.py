@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, render_template, request, session, make_response
-from db_func import create_table_users, add_user, update_user_score, get_top_leaders, get_db_connection
+from db_func import create_table_users, add_user, update_user_score, get_top_leaders, get_db_connection, check_user_exist
 # from df_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, get_db_connection
 from game.game import Game
 import secrets
@@ -44,12 +44,7 @@ def register():
 
             create_table_users()
 
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM users WHERE user_id = ?', (user_id,))
-            user_exists = cursor.fetchone()
-            conn.close()
-
+            user_exists = check_user_exist(user_id)
             if not user_exists:
                 add_user(user_id, secret_code)
         else:

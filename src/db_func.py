@@ -95,5 +95,15 @@ def get_place_in_top(user_id, leaders):
         pass
 
 
+def check_user_exist(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users WHERE user_id = ?', (user_id,))
+    user_exists = cursor.fetchone()
+    conn.close()
+
+    return user_exists
+
+
 if __name__ == "__main__":
     create_table_users()
