@@ -66,5 +66,30 @@ def get_top_leaders():
     return leaders
 
 
+def get_all_users_by_score():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT user_id, score
+        FROM users
+        ORDER BY score DESC
+    ''')
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
+def get_place_by_user_id(user_id, all_users):
+    for place, (uid, _) in enumerate(all_users, start=1):
+        if uid == user_id:
+            return place
+    return None
+
+
+def get_place_in_top(user_id, leaders):
+    if user_id in leaders.keys():
+        pass
+
+
 if __name__ == "__main__":
     create_table_users()
