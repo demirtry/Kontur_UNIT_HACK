@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-
 ITEMS_FILE = Path('game/items.json')
+
 
 def load_items():
     if not ITEMS_FILE.exists():
@@ -19,17 +19,14 @@ def save_items(data):
 
 
 class Cell:
-    def __init__(self, id, treasure, weight):
-        self.id = id
+    def __init__(self, cell_id, treasure, weight):
+        self.cell_id = cell_id
         self.treasure = treasure
         self.weight = weight
         self.status = False
 
     def change_status(self):
-        if self.status:
-            pass
-        else:
-            pass
+        self.status = not self.status
 
 
 class Matrix:
@@ -39,42 +36,25 @@ class Matrix:
         self.weight_sum = 0
         self.treasure_sum = 0
         self.selected_cells = set()
-
         self.cells = []
+
         items = load_items()
-        item_id = 0
-        for j in range(size_y):
-            current_cell = []
-            for i in range(size_x):
-                current_item = items.get(str(item_id))
-                print(current_item, "cur_item")
-                item_treasure, item_weight = current_item["treasure"], current_item["weight"]
-                current_cell.append(Cell(item_id, item_treasure, item_weight))
 
-                item_id += 1
+        for i in range(size_x * size_y):
+            cur_item = items.get(str(i))
+            self.cells.append(Cell(i, cur_item['treasure'], cur_item['weight']))
 
-            self.cells.append(current_cell)
-
-    def update_values(self, cell_id):
-        current_cell = self.cells[cell_id // self.size_y][cell_id % self.size_x]
-        if current_cell.status:
-            self.weight_sum -= current_cell.weight
-            self.treasure_sum -= current_cell.treasure
-            self.selected_cells.remove(current_cell.id)
-        else:
-            self.weight_sum += current_cell.weight
-            self.treasure_sum += current_cell.treasure
-            self.selected_cells.add(current_cell.id)
-
-        current_cell.change_status()
+    def get_cell_by_id(self, cell_id):
+        return self.cells[cell_id]
 
     def get_selected_ids(self):
         return tuple(self.selected_cells)
 
 
-
 class Game:
     def __init__(self, size_x=5, size_y=5, backpack_size=100):
+        self.weight_sum = 0
+        self.treasure_sum = 0
         self.matrix = Matrix(size_x, size_y)
         self.best_treasure = 0
         self.backpack_size = backpack_size
@@ -83,13 +63,35 @@ class Game:
         self.best_treasure = max(self.best_treasure, self.matrix.treasure_sum)
 
     def process_click(self, cell_id):
-        self.matrix.update_values(cell_id)
+        cell = self.matrix.get_cell_by_id(cell_id)
+
+        if cell.status:
+            self.weight_sum -= cell.weight
+            self.treasure_sum -= cell.treasure
+            self.matrix.selected_cells.remove(cell.cell_id)
+        else:
+            if self.weight_sum + current_cell.weight > self.backpack_size:
+                return False
+            self.weight_sum += cell.weight
+            self.treasure_sum += cell.treasure
+            self.matrix.selected_cells.add(cell.cell_id)
+
+        cell.change_status()
         self.compare_scores()
+        return True
+
+    def get_values(self):
+        return {
+            "backpack_size": self.backpack_size,
+            "treasure_sum": self.matrix.treasure_sum,
+            "weight_sum": self.matrix.weight_sum,
+            "best_treasure": self.best_treasure,
+            "selected_ids": self.matrix.get_selected_ids()
+        }
 
 
 # Подумать как обрабатывать если объект не влезает в рюкзак
 # реализовать Cell.change_status
-
 
 
 if __name__ == "__main__":

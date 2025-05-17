@@ -50,43 +50,29 @@ def register():
     return render_template('register.html')
 
 
-# @app.route('/api/process_click/<int:cell_index>', methods=['POST'])
-# def process_click(cell_id):
-#     user_id = session.get('user_id')
-#     if not user_id:
-#         return jsonify({"error": "Unauthorized"}), 401
-#
-#     game = load_game(user_id)
-#
-#
-#     selected_cells = session.get('selected_cells', [])
-#     current_weight = session.get('current_weight', 0)
-#     current_value = session.get('current_value', 0)
-#
-#     if cell_id in selected_cells:
-#         return jsonify({
-#             "selected_cells": selected_cells,
-#             "current_weight": current_weight,
-#             "current_value": current_value
-#         })
-#
-#     new_weight = current_weight + weight
-#     if new_weight > GLOBAL_MAX_WEIGHT:
-#         return jsonify({"error": "Превышен максимальный вес"}), 400
-#
-#     selected_cells.append(cell_id)
-#     current_weight += weight
-#     current_value += value
-#
-#     session['selected_cells'] = selected_cells
-#     session['current_weight'] = current_weight
-#     session['current_value'] = current_value
-#
-#     return jsonify({
-#         "selected_cells": selected_cells,
-#         "current_weight": current_weight,
-#         "current_value": current_value
-#     })
+@app.route('/api/process_click/<int:cell_id>', methods=['POST'])
+def process_click(cell_id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    game = load_game(user_id)
+
+    weight_is_lower = game.process_click(cell_id)
+
+    values = game.get_values()
+    values['weight_is_lower'] = weight_is_lower
+
+    if not weight_is_lower:
+        return jsonify({"error": "Превышен максимальный вес"}), 400
+
+    return jsonify({
+        "selected_cells": selected_cells,
+        "current_weight": current_weight,
+        "current_value": current_value
+    })
+
+    return jsonify(values)
 #
 #
 # @app.route('/api/finish', methods=['POST'])
@@ -143,21 +129,16 @@ def start_game():
     текущий скор, индексы ячеек которые выбраны, размер рюкзака, максимальный результат
     """
 
-    values = {
-        "backpack_size": game.backpack_size,
-        "treasure_sum": game.matrix.treasure_sum,
-        "best_treasure": game.best_treasure,
-        "selected_ids": game.matrix.get_selected_ids()
-    }
-    print("отработало")
-    return jsonify(values)
+    values = game.get_values()
+    values['weight_is_lower'] = False
+    # return jsonify(values)
 
-    # return render_template('game_vue.html',
-    #                        matrix=game.matrix,
-    #                        max_weight=game.backpack_size,
-    #                        selected_cells=json.dumps(selected_cells),
-    #                        current_weight=current_weight,
-    #                        current_value=current_value)
+    return render_template('game.html',
+                           backpack_size=values['backpack_size'],
+                           treasure_sum=values['treasure_sum'],
+                           selected_cells=json.dumps(values['selected_cells']),
+                           weight_sum=values['weight_sum'],
+                           best_treasure=values['best_treasure'])
 
 
 if __name__ == '__main__':
