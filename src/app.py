@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session
 from db_func import create_table_users, add_user
 from game.game import Game
 import secrets
+import json
 from flask import jsonify
 
 
@@ -62,15 +63,6 @@ def process_click(cell_id):
 
     values = game.get_values()
     values['weight_is_lower'] = weight_is_lower
-
-    if not weight_is_lower:
-        return jsonify({"error": "Превышен максимальный вес"}), 400
-
-    return jsonify({
-        "selected_cells": selected_cells,
-        "current_weight": current_weight,
-        "current_value": current_value
-    })
 
     return jsonify(values)
 #
