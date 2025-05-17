@@ -2,8 +2,7 @@ import json
 from pathlib import Path
 
 
-# ITEMS_FILE = Path('items.json')
-ITEMS_FILE = Path(__file__).parent / 'items.json'
+ITEMS_FILE = Path('game/items.json')
 
 def load_items():
     if not ITEMS_FILE.exists():
