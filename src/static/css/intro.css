@@ -1,0 +1,103 @@
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+.main-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 90%;
+    max-width: 600px;
+    text-align: left;
+    transform: scale(0.95);
+    animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 28px;
+    text-align: center;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+    border-radius: 3px;
+}
+
+p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+a.nav-button {
+    display: inline-block;
+    text-decoration: none;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    margin-top: 20px;
+    float: right;
+}
+
+a.nav-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
+}
+
+a.nav-button:active {
+    transform: translateY(1px);
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.decoration {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+    z-index: -1;
+}
+
+.decoration:nth-child(1) {
+    top: 10%;
+    left: 10%;
+}
+
+.decoration:nth-child(2) {
+    bottom: 10%;
+    right: 10%;
+}
