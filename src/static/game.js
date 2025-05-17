@@ -169,18 +169,27 @@ async function endGame() {
 document.getElementById('finish-btn').addEventListener('click', async () => {
     try {
         await endGame();
-        alert(`Игра завершена!\nВаш счёт: ${currentTreasure}\nЛучший счёт: ${bestTreasure}`);
         localStorage.removeItem('knapsackGameState');
+        location.reload();
     } catch (error) {
         alert('Ошибка при завершении игры: ' + error.message);
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const timeLeft = loadGameState();
+    if (timeLeft <= 0) {
+        document.querySelector('.game-container').classList.add('game-ended');
+    } else {
+        initGame();
+        startTimer();
+    }
+});
 
 function startTimer() {
     let timeLeft = loadGameState();
-
     const timerElement = document.getElementById('time-left');
+    const gameContainer = document.querySelector('.game-container');
     updateTimerDisplay();
 
     const timer = setInterval(() => {
@@ -189,6 +198,7 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearInterval(timer);
+            gameContainer.classList.add('game-ended');
             endGame().then(() => {
                 alert(`Время вышло!\nВаш лучший счёт: ${bestTreasure}`);
                 localStorage.removeItem('knapsackGameState');
@@ -206,8 +216,3 @@ function startTimer() {
         timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    initGame();
-    startTimer();
-});
