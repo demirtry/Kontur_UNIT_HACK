@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Игра в рюкзак</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+
+    .game-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 90%;
+      max-width: 800px;
+      margin: 0 auto;
+      transform: scale(0.95);
+      animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-size: 24px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, #3498db, #9b59b6);
+      border-radius: 3px;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .stats-item {
+      background: rgba(52, 152, 219, 0.1);
+      padding: 12px 20px;
+      border-radius: 10px;
+      min-width: 120px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .stats-item .label {
+      font-size: 14px;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+    }
+
+    .stats-item .value {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .cell {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      aspect-ratio: 1/1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cell:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+      border-color: #3498db;
+    }
+
+    .cell.selected {
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+      border-color: #9b59b6;
+    }
+
+    .cell-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .cell-weight, .cell-treasure {
+      font-size: 12px;
+      color: #7f8c8d;
+    }
+
+    .cell-treasure {
+      color: #27ae60;
+      font-weight: 500;
+    }
+
+    .finish-btn {
+      background: linear-gradient(90deg, #3498db, #9b59b6);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      margin: 30px auto 0;
+      display: block;
+    }
+
+    .finish-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
+    }
+
+    .finish-btn:active {
+      transform: translateY(1px);
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .decoration {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+      z-index: -1;
+    }
+
+    .decoration:nth-child(1) {
+      top: 10%;
+      left: 10%;
+    }
+
+    .decoration:nth-child(2) {
+      bottom: 10%;
+      right: 10%;
+    }
+
+    @media (max-width: 600px) {
+      .game-header {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="decoration"></div>
+<div class="decoration"></div>
+
+<div class="game-container">
+  <h2>Игра в рюкзак</h2>
+
+  <div class="game-header">
+    <div class="stats-item">
+      <div class="label">Вес</div>
+      <div class="value" id="current-weight">0/50</div>
+    </div>
+    <div class="stats-item">
+      <div class="label">Текущий счёт</div>
+      <div class="value" id="current-score">0</div>
+    </div>
+    <div class="stats-item">
+      <div class="label">Лучший счёт</div>
+      <div class="value" id="best-score">0</div>
+    </div>
+    <div class="stats-item">
+      <div class="label">Осталось времени</div>
+      <div class="value" id="time-left">1:31</div>
+    </div>
+  </div>
+
+  <div class="grid-container" id="game-grid">
+    <!-- Cells will be generated by JavaScript -->
+  </div>
+
+  <button class="finish-btn" id="finish-btn">Завершить игру</button>
+</div>
+
+<script>
+  // Sample items data - in real app this would come from your backend
+  const sampleItems = [
+    { weight: 10, treasure: 20 },
+    { weight: 5, treasure: 15 },
+    { weight: 3, treasure: 40 },
+    { weight: 3, treasure: 40 },
+    { weight: 9, treasure: 46 },
+    { weight: 6, treasure: 47 },
+    { weight: 10, treasure: 35 },
+    { weight: 10, treasure: 35 },
+    { weight: 19, treasure: 10 },
+    { weight: 18, treasure: 28 },
+    { weight: 10, treasure: 7 },
+    { weight: 19, treasure: 25 },
+    { weight: 9, treasure: 50 },
+    { weight: 8, treasure: 47 },
+    { weight: 9, treasure: 10 },
+    { weight: 1, treasure: 28 },
+    { weight: 20, treasure: 27 },
+    { weight: 10, treasure: 14 },
+    { weight: 17, treasure: 39 },
+    { weight: 6, treasure: 44 },
+    { weight: 10, treasure: 42 },
+    { weight: 13, treasure: 43 },
+    { weight: 8, treasure: 5 },
+    { weight: 12, treasure: 11 },
+    { weight: 18, treasure: 41 }
+  ];
+
+  // Game state
+  let selectedCells = new Set();
+  let currentWeight = 0;
+  let currentTreasure = 0;
+  let bestTreasure = 0;
+  const maxWeight = 50;
+
+  // Initialize game
+  function initGame() {
+    const gameGrid = document.getElementById('game-grid');
+    gameGrid.innerHTML = '';
+
+    sampleItems.forEach((item, index) => {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.id = index;
+
+      cell.innerHTML = `
+                    <div class="cell-icon">💰</div>
+                    <div class="cell-weight">Вес: ${item.weight}</div>
+                    <div class="cell-treasure">Ценность: ${item.treasure}</div>
+                `;
+
+      cell.addEventListener('click', () => handleCellClick(index, item));
+      gameGrid.appendChild(cell);
+    });
+
+    updateStats();
+  }
+
+  // Handle cell click
+  function handleCellClick(index, item) {
+    if (selectedCells.has(index)) {
+      // Deselect
+      selectedCells.delete(index);
+      currentWeight -= item.weight;
+      currentTreasure -= item.treasure;
+    } else {
+      // Check if we can select
+      if (currentWeight + item.weight > maxWeight) {
+        alert('Превышен максимальный вес рюкзака!');
+        return;
+      }
+
+      // Select
+      selectedCells.add(index);
+      currentWeight += item.weight;
+      currentTreasure += item.treasure;
+
+      // Update best treasure
+      if (currentTreasure > bestTreasure) {
+        bestTreasure = currentTreasure;
+      }
+    }
+
+    // Update UI
+    updateCellAppearance(index);
+    updateStats();
+  }
+
+  // Update cell appearance
+  function updateCellAppearance(index) {
+    const cell = document.querySelector(`.cell[data-id="${index}"]`);
+    if (selectedCells.has(index)) {
+      cell.classList.add('selected');
+    } else {
+      cell.classList.remove('selected');
+    }
+  }
+
+  // Update stats display
+  function updateStats() {
+    document.getElementById('current-weight').textContent = `${currentWeight}/${maxWeight}`;
+    document.getElementById('current-score').textContent = currentTreasure;
+    document.getElementById('best-score').textContent = bestTreasure;
+  }
+
+  // Finish game button
+  document.getElementById('finish-btn').addEventListener('click', () => {
+    alert(`Игра завершена!\nВаш счёт: ${currentTreasure}\nЛучший счёт: ${bestTreasure}`);
+    // In real app, you would send this to your backend
+  });
+
+  // Initialize timer
+  function startTimer() {
+    let timeLeft = 91; // 1:31 in seconds
+    const timerElement = document.getElementById('time-left');
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        alert('Время вышло!');
+      }
+    }, 1000);
+  }
+
+  // Start the game
+  initGame();
+  startTimer();
+</script>
+</body>
+</html>
