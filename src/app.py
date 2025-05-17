@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from db_func import get_db_connection, create_table_users
 import uuid
 import secrets
