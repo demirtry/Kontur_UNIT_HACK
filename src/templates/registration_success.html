@@ -14,38 +14,39 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            position: relative;
         }
 
-        .success-container {
+        .main-container {
             background: white;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             padding: 40px;
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             text-align: center;
             transform: scale(0.95);
             animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        h2 {
+        h1 {
             color: #2c3e50;
             margin-bottom: 30px;
             font-weight: 600;
-            font-size: 24px;
+            font-size: 28px;
             position: relative;
             display: inline-block;
         }
 
-        h2::after {
+        h1::after {
             content: '';
             position: absolute;
             bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
+            width: 60px;
             height: 3px;
-            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            background: linear-gradient(90deg, #3498db, #9b59b6);
             border-radius: 3px;
         }
 
@@ -55,14 +56,12 @@
             padding: 20px;
             margin: 20px 0;
             text-align: left;
+            font-size: 16px;
+            color: #2c3e50;
         }
 
         .info-item {
             margin-bottom: 15px;
-        }
-
-        .info-item:last-child {
-            margin-bottom: 0;
         }
 
         .info-label {
@@ -75,37 +74,39 @@
         .info-value {
             font-size: 18px;
             font-weight: 600;
-            color: #2c3e50;
             word-break: break-all;
         }
 
         .success-icon {
-            color: #2ecc71;
+            color: #3498db;
             font-size: 60px;
             margin-bottom: 20px;
         }
 
-        .start-button {
-            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        .nav-button {
+            text-decoration: none;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
             color: white;
-            border: none;
-            padding: 12px 30px;
+            padding: 14px 28px;
             font-size: 16px;
             border-radius: 50px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-weight: 600;
+            font-weight: 500;
+            letter-spacing: 0.5px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            width: 100%;
+            max-width: 250px;
+            margin: 20px auto 0;
+            display: inline-block;
         }
 
-        .start-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
         }
 
-        .start-button:active {
-            transform: translateY(0);
+        .nav-button:active {
+            transform: translateY(1px);
         }
 
         @keyframes scaleIn {
@@ -118,7 +119,7 @@
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            background: linear-gradient(45deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.1));
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
             z-index: -1;
         }
 
@@ -138,9 +139,9 @@
     <div class="decoration"></div>
     <div class="decoration"></div>
 
-    <div class="success-container">
+    <div class="main-container">
         <div class="success-icon">✓</div>
-        <h2>Успешно!</h2>
+        <h1>Успешно!</h1>
 
         <div class="info-box">
             <div class="info-item">
@@ -153,7 +154,7 @@
             </div>
         </div>
 
-        <a href="game"><button class="start-button">Начать игру</button></a>
+        <a href="game" class="nav-button">Начать игру</a>
     </div>
 </body>
 </html>
