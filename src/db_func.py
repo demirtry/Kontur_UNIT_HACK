@@ -26,8 +26,23 @@ def create_table_users():
 
 def add_user(user_id, secret_code):
     conn = get_db_connection()
-    conn.execute('INSERT INTO users (user_id, secret_code) VALUES (?, ?)',
-                 (user_id, secret_code))
+    conn.execute('INSERT INTO users (user_id, secret_code, score) VALUES (?, ?, ?)',
+                 (user_id, secret_code, 0))
+    conn.commit()
+    conn.close()
+
+
+def update_user_score(user_id, user_score):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        '''
+            UPDATE users
+            SET score = ?
+            WHERE user_id = ?
+        ''', (user_score, user_id))
+
     conn.commit()
     conn.close()
 
