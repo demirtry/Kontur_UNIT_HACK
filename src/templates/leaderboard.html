@@ -142,6 +142,31 @@
                 padding: 10px 6px;
             }
         }
+
+        .finish-btn {
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            margin: 30px auto 0;
+            display: block;
+        }
+
+        .finish-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .finish-btn:active {
+            transform: translateY(1px);
+        }
     </style>
 </head>
 <body>
@@ -174,6 +199,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        <a href="/intro1" style="text-decoration: none;"><button class="finish-btn">Вернуться в начало</button></a>
     </div>
 </body>
 </html>
