@@ -21,6 +21,14 @@ const maxWeight = initialGameState.backpackSize;
 let items = [];
 
 async function loadItems() {
+    const savedState = localStorage.getItem('knapsackGameState');
+    if (savedState) {
+        const state = JSON.parse(savedState);
+        if (state.items && Array.isArray(state.items)) {
+            return state.items;
+        }
+    }
+
     try {
         const response = await fetch('/api/get_items');
         if (!response.ok) {
@@ -32,11 +40,19 @@ async function loadItems() {
             throw new Error(itemsData.error);
         }
 
+        shuffleArray(itemsData);
         return itemsData;
     } catch (error) {
         console.error('Error loading items:', error);
         alert('Не удалось загрузить предметы. Пожалуйста, попробуйте позже.');
         throw error;
+    }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
 }
 
@@ -72,6 +88,7 @@ async function initGame() {
         const gameGrid = document.getElementById('game-grid');
         gameGrid.innerHTML = '';
 
+        // Теперь items - это уже перемешанный массив
         items.forEach((item, index) => {
             const cell = document.createElement('div');
             cell.className = 'cell';
@@ -171,6 +188,7 @@ document.getElementById('finish-btn').addEventListener('click', async () => {
         await endGame();
         localStorage.removeItem('knapsackGameState');
         location.reload();
+        isGameEnded = true
     } catch (error) {
         alert('Ошибка при завершении игры: ' + error.message);
     }
