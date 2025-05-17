@@ -1,9 +1,10 @@
+<!--<h2>Начнём игру!</h2><a href='/'>На главную</a>-->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Успешная регистрация</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Решите задачу о рюкзаке!</title>
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -23,7 +24,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             padding: 40px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             text-align: center;
             transform: scale(0.95);
             animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -31,11 +32,10 @@
 
         h1 {
             color: #2c3e50;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-weight: 600;
             font-size: 28px;
             position: relative;
-            display: inline-block;
         }
 
         h1::after {
@@ -50,40 +50,15 @@
             border-radius: 3px;
         }
 
-        .info-box {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
+        p {
             font-size: 16px;
-            color: #2c3e50;
-        }
-
-        .info-item {
-            margin-bottom: 15px;
-        }
-
-        .info-label {
-            font-weight: 500;
-            color: #7f8c8d;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            font-size: 18px;
-            font-weight: 600;
-            word-break: break-all;
-        }
-
-        .success-icon {
-            color: #3498db;
-            font-size: 60px;
+            color: #34495e;
+            line-height: 1.6;
             margin-bottom: 20px;
         }
 
-        .nav-button {
+        a.nav-button {
+            display: inline-block;
             text-decoration: none;
             background: linear-gradient(90deg, #3498db, #9b59b6);
             color: white;
@@ -94,18 +69,15 @@
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-            width: 100%;
-            max-width: 250px;
-            margin: 20px auto 0;
-            display: inline-block;
+            margin-top: 20px;
         }
 
-        .nav-button:hover {
+        a.nav-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
         }
 
-        .nav-button:active {
+        a.nav-button:active {
             transform: translateY(1px);
         }
 
@@ -133,28 +105,20 @@
             right: 10%;
         }
     </style>
-    <script src="{{ url_for('static', filename='game.js') }}" defer></script>
 </head>
 <body>
     <div class="decoration"></div>
     <div class="decoration"></div>
 
     <div class="main-container">
-        <div class="success-icon">✓</div>
-        <h1>Успешно!</h1>
-
-        <div class="info-box">
-            <div class="info-item">
-                <span class="info-label">ID пользователя</span>
-                <span class="info-value">{{ user_id }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Кодовое слово</span>
-                <span class="info-value">{{ secret_code }}</span>
-            </div>
+        <h1>Поиграем?</h1>
+        <p>Предлагаем вам самостоятельно найти лучшее решение!</p>
+        <p>Анализируйте, комбинируйте предметы и увеличивайте ценность рюкзака</p>
+        <p>Время ограничено, лучшие игроки попадут в таблицу лидеров</p>
+        <div style="margin-top: 40px; display: flex; justify-content: space-between; gap: 15px;">
+            <a href="intro2" class="nav-button">← Назад</a>
+            <a href="game" class="nav-button">Начать игру</a>
         </div>
-
-        <a href="intro1" class="nav-button">Начать игру</a>
     </div>
 </body>
 </html>

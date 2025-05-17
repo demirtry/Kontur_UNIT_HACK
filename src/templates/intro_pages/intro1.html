@@ -1,9 +1,10 @@
+<!--<h2>Что такое задача о рюкзаке?</h2><p>Это NP-полная задача...</p><a href='/intro/2'>Далее</a>-->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Успешная регистрация</title>
+    <title>Задача о рюкзаке — теория</title>
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -23,8 +24,8 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             padding: 40px;
             width: 90%;
-            max-width: 450px;
-            text-align: center;
+            max-width: 600px;
+            text-align: left;
             transform: scale(0.95);
             animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
@@ -34,8 +35,8 @@
             margin-bottom: 30px;
             font-weight: 600;
             font-size: 28px;
+            text-align: center;
             position: relative;
-            display: inline-block;
         }
 
         h1::after {
@@ -50,40 +51,18 @@
             border-radius: 3px;
         }
 
-        .info-box {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-            font-size: 16px;
-            color: #2c3e50;
-        }
-
-        .info-item {
+        p {
             margin-bottom: 15px;
+            line-height: 1.6;
         }
 
-        .info-label {
-            font-weight: 500;
-            color: #7f8c8d;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            font-size: 18px;
-            font-weight: 600;
-            word-break: break-all;
-        }
-
-        .success-icon {
-            color: #3498db;
-            font-size: 60px;
+        ul {
             margin-bottom: 20px;
+            padding-left: 20px;
         }
 
-        .nav-button {
+        a.nav-button {
+            display: inline-block;
             text-decoration: none;
             background: linear-gradient(90deg, #3498db, #9b59b6);
             color: white;
@@ -94,18 +73,16 @@
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-            width: 100%;
-            max-width: 250px;
-            margin: 20px auto 0;
-            display: inline-block;
+            margin-top: 20px;
+            float: right;
         }
 
-        .nav-button:hover {
+        a.nav-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
         }
 
-        .nav-button:active {
+        a.nav-button:active {
             transform: translateY(1px);
         }
 
@@ -133,28 +110,29 @@
             right: 10%;
         }
     </style>
-    <script src="{{ url_for('static', filename='game.js') }}" defer></script>
 </head>
 <body>
     <div class="decoration"></div>
     <div class="decoration"></div>
 
     <div class="main-container">
-        <div class="success-icon">✓</div>
-        <h1>Успешно!</h1>
+        <h1>Что такое задача о рюкзаке?</h1>
 
-        <div class="info-box">
-            <div class="info-item">
-                <span class="info-label">ID пользователя</span>
-                <span class="info-value">{{ user_id }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Кодовое слово</span>
-                <span class="info-value">{{ secret_code }}</span>
-            </div>
-        </div>
+        <p><strong>Задача о рюкзаке</strong> — это одна из классических задач комбинаторной оптимизации. Она заключается в выборе предметов таким образом, чтобы их общий вес не превышал заданного предела (вместимости рюкзака), а суммарная ценность была максимальной.</p>
 
-        <a href="intro1" class="nav-button">Начать игру</a>
+        <p>Представьте, что вы собираетесь в поход и можете взять ограниченное количество вещей. Каждый предмет имеет свой вес и ценность. Задача состоит в том, чтобы упаковать наиболее ценные предметы, не перегружая рюкзак.</p>
+
+        <h2>Пример</h2>
+        <p>Допустим, вместимость рюкзака — 10 кг. У вас есть следующие предметы:</p>
+        <ul>
+            <li>Книга (вес: 2 кг, ценность: 40)</li>
+            <li>Ноутбук (вес: 5 кг, ценность: 100)</li>
+            <li>Фотоаппарат (вес: 3 кг, ценность: 70)</li>
+            <li>Вода (вес: 4 кг, ценность: 50)</li>
+        </ul>
+        <p>Лучший набор будет иметь ценность 210 (Ноутбук, Книга, Вода)</p>
+
+        <a href="/intro2" class="nav-button">Далее</a>
     </div>
 </body>
 </html>
