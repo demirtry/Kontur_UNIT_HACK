@@ -100,7 +100,7 @@ function handleCellClick(index, item) {
 
 function updateCellAppearance(index) {
     const cell = document.querySelector(`.cell[data-id="${index}"]`);
-    if (cell) {  // Проверяем, существует ли элемент
+    if (cell) {
         if (selectedCells.has(index)) {
             cell.classList.add('selected');
         } else {
@@ -120,7 +120,7 @@ document.getElementById('finish-btn').addEventListener('click', () => {
 });
 
 function startTimer() {
-    let timeLeft = 91; // 1:31 in seconds
+    let timeLeft = 120;
     const timerElement = document.getElementById('time-left');
 
     const timer = setInterval(() => {
@@ -140,27 +140,3 @@ document.addEventListener('DOMContentLoaded', () => {
     initGame();
     startTimer();
 });
-
-// async function startGame() {
-//     const response = await fetch('/game');
-//
-// }
-// async function show_progress() {
-//     const response = await fetch('/start_game');
-// //    функция Отобразить ячейки
-//
-// }
-//
-// async function process_click() {
-//     const response = await fetch('/process_click');
-// //    [снять выделение, выделить, не влезает]
-// //    values
-// //        values = {
-// //        "backpack_size": game.backpack_size,
-// //        "treasure_sum": game.matrix.treasure_sum,
-// //        "best_treasure": game.best_treasure,
-// //        "selected_ids": game.matrix.get_selected_ids()
-//     }
-// //    функция Отобразить ячейки
-//
-// }
