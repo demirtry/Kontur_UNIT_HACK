@@ -1,1 +1,179 @@
-<h2>Таблица лидеров</h2><ul>{% for user in users %}<li>{{ user['user_id'] }}: {{ user['score'] }}</li>{% endfor %}</ul>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .leaderboard-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px 15px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 2px;
+        }
+
+        .leaderboard {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .leaderboard th {
+            color: #7f8c8d;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            padding-bottom: 10px;
+            padding: 0 8px 10px 8px;
+        }
+
+        .leaderboard td {
+            padding: 12px 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .leaderboard td.place {
+            width: 50px;
+            padding: 12px 5px;
+            text-align: center;
+        }
+
+        .leaderboard td.user-id {
+            padding: 12px 10px;
+            text-align: left;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .leaderboard td.score {
+            padding: 12px 10px;
+            text-align: right;
+            width: 70px;
+        }
+
+        /* Места с 1 по 3 */
+        .leaderboard tr:nth-child(1) td {
+            background: linear-gradient(90deg, #fdcb6e, #e17055);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(253, 203, 110, 0.3);
+        }
+
+        .leaderboard tr:nth-child(2) td {
+            background: linear-gradient(90deg, #a4b0be, #747d8c);
+            color: white;
+            font-weight: 600;
+        }
+
+        .leaderboard tr:nth-child(3) td {
+            background: linear-gradient(90deg, #cd6133, #b33939);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Места с 4 по 10 */
+        .leaderboard tr:nth-child(n+4):nth-child(-n+10) td {
+            background: #eef2f5;
+            border-left: 2px solid #d1dae0;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .trophy {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .decoration {
+                display: none;
+            }
+            .leaderboard-container {
+                padding: 20px 10px;
+            }
+            .leaderboard td {
+                padding: 10px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+
+    <div class="leaderboard-container">
+        <h2>{{ title }}</h2>
+        <table class="leaderboard">
+            <thead>
+                <tr>
+                    <th>Место</th>
+                    <th style="text-align: left;">Игрок</th>
+                    <th style="text-align: right;">Очки</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leader in leaders %}
+                <tr>
+                    <td class="place">
+                        {% if loop.index == 1 %}🏆
+                        {% elif loop.index == 2 %}🥈
+                        {% elif loop.index == 3 %}🥉
+                        {% endif %}
+                        {{ loop.index }}
+                    </td>
+                    <td class="user-id">{{ leader.user_id }}</td>
+                    <td class="score">{{ leader.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

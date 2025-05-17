@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, render_template, request, session
-from db_func import create_table_users, add_user, update_user_score
+from db_func import create_table_users, add_user, update_user_score, get_top_leaders
 from game.game import Game
 import secrets
 from flask import jsonify
@@ -99,6 +99,14 @@ def end_game():
     user_id = session.get('user_id')
     game = load_game(user_id)
     update_user_score(user_id, game.best_treasure)
+
+
+@app.route("/leaderboard")
+def leaderboard():
+    leaders = get_top_leaders()
+    return render_template("leaderboard.html",
+                         title="Таблица лидеров",
+                         leaders=leaders)
 
 
 if __name__ == '__main__':
