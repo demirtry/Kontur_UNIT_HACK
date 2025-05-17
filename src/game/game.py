@@ -60,7 +60,7 @@ class Game:
         self.backpack_size = backpack_size
 
     def compare_scores(self):
-        self.best_treasure = max(self.best_treasure, self.matrix.treasure_sum)
+        self.best_treasure = max(self.best_treasure, self.treasure_sum)
 
     def process_click(self, cell_id):
         cell = self.matrix.get_cell_by_id(cell_id)
@@ -83,25 +83,12 @@ class Game:
     def get_values(self):
         return {
             "backpack_size": self.backpack_size,
-            "weight_sum": self.matrix.weight_sum,
-            "treasure_sum": self.matrix.treasure_sum,
+            "weight_sum": self.weight_sum,
+            "treasure_sum": self.treasure_sum,
             "best_treasure": self.best_treasure,
             "selected_ids": list(self.matrix.get_selected_ids())
         }
 
-
-# Подумать как обрабатывать если объект не влезает в рюкзак
-# реализовать Cell.change_status
-
-
 if __name__ == "__main__":
     items = load_items()
     print(items)
-    # game = Game()
-    # values = {
-    #     "backpack_size": game.backpack_size,
-    #     "treasure_sum": game.matrix.treasure_sum,
-    #     "best_treasure": game.best_treasure,
-    #     "selected_ids": game.matrix.get_selected_ids()
-    # }
-    # print(values)
