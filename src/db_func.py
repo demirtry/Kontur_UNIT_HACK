@@ -38,13 +38,32 @@ def update_user_score(user_id, user_score):
 
     cursor.execute(
         '''
-            UPDATE users
-            SET score = ?
-            WHERE user_id = ?
+        UPDATE users
+        SET score = ?
+        WHERE user_id = ?
         ''', (user_score, user_id))
 
     conn.commit()
     conn.close()
+
+
+def get_top_leaders():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        '''
+        SELECT user_id, score
+        FROM users
+        ORDER BY score DESC
+        LIMIT 10
+        '''
+    )
+
+    rows = cursor.fetchall()
+    conn.close()
+    leaders = [{"user_id": row[0], "score": row[1]} for row in rows]
+    return leaders
 
 
 if __name__ == "__main__":
