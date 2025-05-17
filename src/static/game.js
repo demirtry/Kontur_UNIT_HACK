@@ -115,9 +115,39 @@ function updateStats() {
     document.getElementById('best-score').textContent = bestTreasure;
 }
 
-document.getElementById('finish-btn').addEventListener('click', () => {
-    alert(`Игра завершена!\nВаш счёт: ${currentTreasure}\nЛучший счёт: ${bestTreasure}`);
+async function endGame() {
+    try {
+        const response = await fetch('/api/game_end', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                best_treasure: bestTreasure
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Ошибка при сохранении результата');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error ending game:', error);
+        throw error;
+    }
+}
+
+document.getElementById('finish-btn').addEventListener('click', async () => {
+    try {
+        await endGame();
+        alert(`Игра завершена!\nВаш счёт: ${currentTreasure}\nЛучший счёт: ${bestTreasure}`);
+    } catch (error) {
+        alert('Ошибка при завершении игры: ' + error.message);
+    }
 });
+
 
 function startTimer() {
     let timeLeft = 120;
@@ -131,7 +161,11 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearInterval(timer);
-            alert('Время вышло!');
+            endGame().then(() => {
+                alert(`Время вышло!\nВаш лучший счёт: ${bestTreasure}`);
+            }).catch(error => {
+                alert('Ошибка при сохранении результата: ' + error.message);
+            });
         }
     }, 1000);
 }

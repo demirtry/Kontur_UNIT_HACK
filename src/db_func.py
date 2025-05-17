@@ -36,15 +36,34 @@ def update_user_score(user_id, user_score):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute(
-        '''
-        UPDATE users
-        SET score = ?
-        WHERE user_id = ?
-        ''', (user_score, user_id))
+    cursor.execute('SELECT score FROM users WHERE user_id = ?', (user_id,))
+    current_score = cursor.fetchone()[0] or 0
+
+    if user_score > current_score:
+        cursor.execute(
+            '''
+            UPDATE users
+            SET score = ?
+            WHERE user_id = ?
+            ''', (user_score, user_id))
 
     conn.commit()
     conn.close()
+
+
+# def update_user_score(user_id, user_score):
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+#
+#     cursor.execute(
+#         '''
+#         UPDATE users
+#         SET score = ?
+#         WHERE user_id = ?
+#         ''', (user_score, user_id))
+#
+#     conn.commit()
+#     conn.close()
 
 
 def get_top_leaders():

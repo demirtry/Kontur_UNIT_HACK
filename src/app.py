@@ -107,11 +107,22 @@ def get_items():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/api/game_end')
-def end_game():
-    user_id = session.get('user_id')
-    game = load_game(user_id)
-    update_user_score(user_id, game.best_treasure)
+@app.route('/api/game_end', methods=['POST'])
+def game_end():
+    user_id = request.json.get("user_id") or session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    best_from_client = request.json.get("best_treasure")
+    if best_from_client is None:
+        return jsonify({"error": "No score provided"}), 400
+
+    update_user_score(user_id, best_from_client)
+
+    return jsonify({
+        "message": "Игра завершена",
+        "saved_score": best_from_client
+    })
 
 
 @app.route("/leaderboard")
