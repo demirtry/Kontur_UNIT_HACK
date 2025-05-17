@@ -1,1 +1,134 @@
-<h2>Успешно!</h2><p>ID: {{ user_id }}</p><p>Кодовое слово: {{ secret_code }}</p>
+<!--<h2>Успешно!</h2><p>ID: {{ user_id }}</p><p>Кодовое слово: {{ secret_code }}</p>-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Успешная регистрация</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(0.95);
+            animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 24px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            border-radius: 3px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #7f8c8d;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            word-break: break-all;
+        }
+
+        .success-icon {
+            color: #2ecc71;
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.1));
+            z-index: -1;
+        }
+
+        .decoration:nth-child(1) {
+            top: 10%;
+            left: 10%;
+        }
+
+        .decoration:nth-child(2) {
+            bottom: 10%;
+            right: 10%;
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h2>Успешно!</h2>
+
+        <div class="info-box">
+            <div class="info-item">
+                <span class="info-label">ID пользователя</span>
+                <span class="info-value">{{ user_id }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Кодовое слово</span>
+                <span class="info-value">{{ secret_code }}</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
