@@ -13,7 +13,7 @@ def create_table_users():
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS users (
-        user_id TEXT NOT NULL UNIQUE,
+        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
         secret_code TEXT NOT NULL UNIQUE,
         score INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
