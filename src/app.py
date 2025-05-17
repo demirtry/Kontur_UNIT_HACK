@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from db_func import get_db_connection, create_table_users
+from game.game import Game
 import uuid
 import secrets
 
@@ -8,6 +9,24 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+def load_game():
+    if 'game_data' not in session:
+        session['game_data'] = {
+            "selected_cells": [],
+            "current_weight": 0,
+            "current_value": 0,
+            "has_played": False
+        }
+    data = session['game_data']
+    game = Game(GLOBAL_MATRIX)
+    game.selected_cells = data["selected_cells"]
+    game.current_weight = data["current_weight"]
+    game.current_value = data["current_value"]
+    game.has_played = data["has_played"]
+    return game
+
 
 # Добавить возврат на фронт id пользователя и кодового слова. Убрать возврат страниц
 @app.route('/register', methods=['GET', 'POST'])
@@ -25,11 +44,6 @@ def register():
 
         return render_template('registration_success.html', user_id=user_id, secret_code=secret_code)
     return render_template('register.html')
-
-@app.route('/api/init-matrix', methods=['POST'])
-def select_cell():
-    #Возвращает матрицу с заполнеными значениями
-    pass
 
 
 @app.route('/api/select-cell', methods=['POST'])
