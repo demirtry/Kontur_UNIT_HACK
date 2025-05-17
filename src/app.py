@@ -1,19 +1,20 @@
 import json
+import secrets
 
-from flask import Flask, render_template, request, session, make_response
-# from db_func import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
+from flask import Flask, render_template, request, session, make_response, jsonify
+
 from db_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
 from game.game import Game
-import secrets
-from flask import jsonify
-
 
 app = Flask(__name__)
-app.secret_key = "AAAAAAAAAA"
+app.secret_key = secrets.token_hex(16)
+
+create_table_users()
+
+games = {}
 secret_codes = set()
 user_ids = set()
 
-games = dict()
 
 @app.route('/')
 def index():
@@ -21,15 +22,14 @@ def index():
 
 
 def get_user_id_this_session():
-    user_id = session["user_id"]
-    return user_id
+    return session.get("user_id")
 
 
 def load_game(user_id):
-    if games.get(user_id) is None:
+    if user_id not in games:
         games[user_id] = Game()
-
     return games[user_id]
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -62,11 +62,11 @@ def register():
         response = make_response(render_template('registration_success.html',
                                                  user_id=user_id,
                                                  secret_code=secret_code))
-
         response.set_cookie('user_id', user_id, max_age=24*60*60)
         return response
 
     return render_template('register.html')
+
 
 @app.route('/api/process_click/<int:cell_id>', methods=['POST'])
 def process_click(cell_id):
@@ -75,9 +75,7 @@ def process_click(cell_id):
         return jsonify({"error": "Unauthorized"}), 401
 
     game = load_game(user_id)
-
     weight_is_lower = game.process_click(cell_id)
-
     values = game.get_values()
     values['weight_is_lower'] = weight_is_lower
 
@@ -102,6 +100,9 @@ def go_to_intro3():
 @app.route('/game')
 def start_game():
     user_id = get_user_id_this_session()
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
     game = load_game(user_id)
     game_state = game.get_values()
 
@@ -146,10 +147,14 @@ def game_end():
 def leaderboard():
     leaders = get_top_leaders()
     return render_template("leaderboard.html",
-                         title="Таблица лидеров",
-                         leaders=leaders)
+                           title="Таблица лидеров",
+                           leaders=leaders)
 
 
-if __name__ == '__main__':
-    create_table_users()
-    app.run(debug=True)
+# Убираем app.run() для деплоя
+# if __name__ == '__main__':
+#     create_table_users()
+#     app.run(debug=True)
+
+
+
