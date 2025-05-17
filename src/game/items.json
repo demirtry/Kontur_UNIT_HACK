@@ -1,0 +1,102 @@
+{
+  "0": {
+    "treasure": 20,
+    "weight": 10
+  },
+  "1": {
+    "treasure": 15,
+    "weight": 5
+  },
+  "2": {
+    "treasure": 40,
+    "weight": 3
+  },
+  "3": {
+    "treasure": 40,
+    "weight": 3
+  },
+  "4": {
+    "treasure": 46,
+    "weight": 9
+  },
+  "5": {
+    "treasure": 47,
+    "weight": 6
+  },
+  "6": {
+    "treasure": 35,
+    "weight": 10
+  },
+  "7": {
+    "treasure": 35,
+    "weight": 10
+  },
+  "8": {
+    "treasure": 10,
+    "weight": 19
+  },
+  "9": {
+    "treasure": 28,
+    "weight": 18
+  },
+  "10": {
+    "treasure": 7,
+    "weight": 10
+  },
+  "11": {
+    "treasure": 25,
+    "weight": 19
+  },
+  "12": {
+    "treasure": 50,
+    "weight": 9
+  },
+  "13": {
+    "treasure": 47,
+    "weight": 8
+  },
+  "14": {
+    "treasure": 10,
+    "weight": 9
+  },
+  "15": {
+    "treasure": 28,
+    "weight": 1
+  },
+  "16": {
+    "treasure": 27,
+    "weight": 20
+  },
+  "17": {
+    "treasure": 14,
+    "weight": 10
+  },
+  "18": {
+    "treasure": 39,
+    "weight": 17
+  },
+  "19": {
+    "treasure": 44,
+    "weight": 6
+  },
+  "20": {
+    "treasure": 42,
+    "weight": 10
+  },
+  "21": {
+    "treasure": 43,
+    "weight": 13
+  },
+  "22": {
+    "treasure": 5,
+    "weight": 8
+  },
+  "23": {
+    "treasure": 11,
+    "weight": 12
+  },
+  "24": {
+    "treasure": 41,
+    "weight": 18
+  }
+}

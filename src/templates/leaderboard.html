@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="../static/css/leaderboard.css">
+</head>
+<body>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+
+    <div class="leaderboard-container">
+        <h2>{{ title }}</h2>
+        <table class="leaderboard">
+            <thead>
+                <tr>
+                    <th>Место</th>
+                    <th style="text-align: left;">Игрок</th>
+                    <th style="text-align: right;">Очки</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leader in leaders %}
+                <tr>
+                    <td class="place">
+                        {% if loop.index == 1 %}🏆
+                        {% elif loop.index == 2 %}🥈
+                        {% elif loop.index == 3 %}🥉
+                        {% endif %}
+                        {{ loop.index }}
+                    </td>
+                    <td class="user-id">{{ leader.user_id }}</td>
+                    <td class="score">{{ leader.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/" style="text-decoration: none;"><button class="finish-btn">Вернуться в начало</button></a>
+    </div>
+</body>
+</html>
