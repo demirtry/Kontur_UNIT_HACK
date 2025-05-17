@@ -92,12 +92,42 @@ def add_user(user_id, secret_code):
         conn.close()
 
 
-def test_connection():
+# def test_connection():
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+#     cursor.execute("SELECT version();")
+#     db_version = cursor.fetchone()
+#     print("✅ Успешно подключено к PostgreSQL:")
+
+
+def get_top_leaders():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT version();")
-    db_version = cursor.fetchone()
-    print("✅ Успешно подключено к PostgreSQL:")
+
+    cursor.execute(
+        '''
+        SELECT user_id, score
+        FROM users
+        ORDER BY score DESC
+        LIMIT 10
+        '''
+    )
+
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    leaders = [{"user_id": row[0], "score": row[1]} for row in rows]
+    return leaders
+
+
+def check_user_exist(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users WHERE user_id = %s', (user_id,))
+    user_exists = cursor.fetchone()
+    conn.close()
+
+    return user_exists
 
 
 if __name__ == '__main__':

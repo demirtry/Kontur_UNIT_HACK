@@ -1,8 +1,8 @@
 import json
 
 from flask import Flask, render_template, request, session, make_response
-from db_func import create_table_users, add_user, update_user_score, get_top_leaders, get_db_connection, check_user_exist
-# from df_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, get_db_connection
+from db_func import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
+# from db_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
 from game.game import Game
 import secrets
 from flask import jsonify
