@@ -125,10 +125,16 @@ def start_game():
     values['weight_is_lower'] = False
     # return jsonify(values)
 
+    # return render_template('game.html',
+    #                        backpack_size=values['backpack_size'],
+    #                        treasure_sum=values['treasure_sum'],
+    #                        selected_cells=json.dumps(values['selected_ids']),
+    #                        weight_sum=values['weight_sum'],
+    #                        best_treasure=values['best_treasure'])
+
     return render_template('game.html',
                            backpack_size=values['backpack_size'],
                            treasure_sum=values['treasure_sum'],
-                           selected_cells=json.dumps(values['selected_cells']),
                            weight_sum=values['weight_sum'],
                            best_treasure=values['best_treasure'])
 

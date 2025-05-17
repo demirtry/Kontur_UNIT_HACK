@@ -70,7 +70,7 @@ class Game:
             self.treasure_sum -= cell.treasure
             self.matrix.selected_cells.remove(cell.cell_id)
         else:
-            if self.weight_sum + current_cell.weight > self.backpack_size:
+            if self.weight_sum + cell.weight > self.backpack_size:
                 return False
             self.weight_sum += cell.weight
             self.treasure_sum += cell.treasure
