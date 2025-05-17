@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, render_template, request, session
-from db_func import create_table_users, add_user
+from db_func import create_table_users, add_user, update_user_score
 from game.game import Game
 import secrets
 from flask import jsonify
@@ -92,6 +92,13 @@ def get_items():
         return jsonify(items_array)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/game_end')
+def end_game():
+    user_id = session.get('user_id')
+    game = load_game(user_id)
+    update_user_score(user_id, game.best_treasure)
 
 
 if __name__ == '__main__':
