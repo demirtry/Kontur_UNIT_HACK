@@ -40,6 +40,33 @@ async function loadItems() {
     }
 }
 
+function saveGameState() {
+    const gameState = {
+        selectedCells: Array.from(selectedCells),
+        currentWeight,
+        currentTreasure,
+        bestTreasure,
+        timeLeft: parseInt(document.getElementById('time-left').textContent.split(':')[0]) * 60 +
+            parseInt(document.getElementById('time-left').textContent.split(':')[1]),
+        items
+    };
+    localStorage.setItem('knapsackGameState', JSON.stringify(gameState));
+}
+
+// Функция загрузки состояния
+function loadGameState() {
+    const savedState = localStorage.getItem('knapsackGameState');
+    if (savedState) {
+        const state = JSON.parse(savedState);
+        selectedCells = new Set(state.selectedCells);
+        currentWeight = state.currentWeight;
+        currentTreasure = state.currentTreasure;
+        bestTreasure = state.bestTreasure;
+        return state.timeLeft;
+    }
+    return 120; // Возвращаем стандартное время, если нет сохраненного состояния
+}
+
 async function initGame() {
     try {
         items = await loadItems();
@@ -59,10 +86,10 @@ async function initGame() {
 
             cell.addEventListener('click', () => handleCellClick(index, item));
             gameGrid.appendChild(cell);
-        });
 
-        initialGameState.selectedIds.forEach(id => {
-            updateCellAppearance(id);
+            if (selectedCells.has(index)) {
+                cell.classList.add('selected');
+            }
         });
 
         updateStats();
@@ -96,6 +123,7 @@ function handleCellClick(index, item) {
 
     updateCellAppearance(index);
     updateStats();
+    saveGameState();
 }
 
 function updateCellAppearance(index) {
@@ -143,6 +171,7 @@ document.getElementById('finish-btn').addEventListener('click', async () => {
     try {
         await endGame();
         alert(`Игра завершена!\nВаш счёт: ${currentTreasure}\nЛучший счёт: ${bestTreasure}`);
+        localStorage.removeItem('knapsackGameState');
     } catch (error) {
         alert('Ошибка при завершении игры: ' + error.message);
     }
@@ -150,24 +179,33 @@ document.getElementById('finish-btn').addEventListener('click', async () => {
 
 
 function startTimer() {
-    let timeLeft = 120;
+    let timeLeft = loadGameState();
+
     const timerElement = document.getElementById('time-left');
+    updateTimerDisplay();
 
     const timer = setInterval(() => {
         timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        updateTimerDisplay();
 
         if (timeLeft <= 0) {
             clearInterval(timer);
             endGame().then(() => {
                 alert(`Время вышло!\nВаш лучший счёт: ${bestTreasure}`);
+                localStorage.removeItem('knapsackGameState');
             }).catch(error => {
                 alert('Ошибка при сохранении результата: ' + error.message);
             });
         }
+
+        saveGameState();
     }, 1000);
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
