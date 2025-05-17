@@ -53,7 +53,6 @@ function saveGameState() {
     localStorage.setItem('knapsackGameState', JSON.stringify(gameState));
 }
 
-// Функция загрузки состояния
 function loadGameState() {
     const savedState = localStorage.getItem('knapsackGameState');
     if (savedState) {
@@ -64,7 +63,7 @@ function loadGameState() {
         bestTreasure = state.bestTreasure;
         return state.timeLeft;
     }
-    return 120; // Возвращаем стандартное время, если нет сохраненного состояния
+    return 120;
 }
 
 async function initGame() {
