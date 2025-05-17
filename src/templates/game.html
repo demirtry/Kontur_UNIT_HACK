@@ -218,42 +218,21 @@
 </div>
 
 <script>
-  // Sample items data - in real app this would come from your backend
-  // const items = [
-  //   { weight: 10, treasure: 20 },
-  //   { weight: 5, treasure: 15 },
-  //   { weight: 3, treasure: 40 },
-  //   { weight: 3, treasure: 40 },
-  //   { weight: 9, treasure: 46 },
-  //   { weight: 6, treasure: 47 },
-  //   { weight: 10, treasure: 35 },
-  //   { weight: 10, treasure: 35 },
-  //   { weight: 19, treasure: 10 },
-  //   { weight: 18, treasure: 28 },
-  //   { weight: 10, treasure: 7 },
-  //   { weight: 19, treasure: 25 },
-  //   { weight: 9, treasure: 50 },
-  //   { weight: 8, treasure: 47 },
-  //   { weight: 9, treasure: 10 },
-  //   { weight: 1, treasure: 28 },
-  //   { weight: 20, treasure: 27 },
-  //   { weight: 10, treasure: 14 },
-  //   { weight: 17, treasure: 39 },
-  //   { weight: 6, treasure: 44 },
-  //   { weight: 10, treasure: 42 },
-  //   { weight: 13, treasure: 43 },
-  //   { weight: 8, treasure: 5 },
-  //   { weight: 12, treasure: 11 },
-  //   { weight: 18, treasure: 41 }
-  // ];
+  const initialGameState = {
+    backpackSize: {{ backpack_size|default(100) }},
+  currentWeight: {{ weight_sum|default(0) }},  // Изменил initial_weight на weight_sum
+  currentTreasure: {{ treasure_sum|default(0) }},  // Изменил initial_treasure на treasure_sum
+  bestTreasure: {{ best_treasure|default(0) }},
+  selectedIds: {{ selected_ids|tojson|default([]) }}
+  };
 
   // Game state
-  let selectedCells = new Set();
-  let currentWeight = 0;
-  let currentTreasure = 0;
-  let bestTreasure = 0;
-  const maxWeight = 50;
-  let items = []
+  let selectedCells = new Set(initialGameState.selectedIds);
+  let currentWeight = initialGameState.currentWeight;
+  let currentTreasure = initialGameState.currentTreasure;
+  let bestTreasure = initialGameState.bestTreasure;
+  const maxWeight = initialGameState.backpackSize;
+  let items = [];
 
   async function loadItems() {
     try {

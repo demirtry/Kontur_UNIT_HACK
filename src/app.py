@@ -72,19 +72,14 @@ def process_click(cell_id):
 def start_game():
     user_id = get_user_id_this_session()
     game = load_game(user_id)
-    """
-    текущий скор, индексы ячеек которые выбраны, размер рюкзака, максимальный результат
-    """
-
-    values = game.get_values()
-    values['weight_is_lower'] = False
-    # return jsonify(values)
+    game_state = game.get_values()
 
     return render_template('game.html',
-                           backpack_size=values['backpack_size'],
-                           treasure_sum=values['treasure_sum'],
-                           weight_sum=values['weight_sum'],
-                           best_treasure=values['best_treasure'])
+                           backpack_size=game_state['backpack_size'],
+                           weight_sum=game_state['weight_sum'],  # Изменил initial_weight на weight_sum
+                           treasure_sum=game_state['treasure_sum'],  # Изменил initial_treasure на treasure_sum
+                           best_treasure=game_state['best_treasure'],
+                           selected_ids=game_state['selected_ids'])
 
 @app.route('/api/get_items')
 def get_items():

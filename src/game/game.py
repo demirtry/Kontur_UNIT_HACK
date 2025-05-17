@@ -83,10 +83,10 @@ class Game:
     def get_values(self):
         return {
             "backpack_size": self.backpack_size,
-            "treasure_sum": self.matrix.treasure_sum,
             "weight_sum": self.matrix.weight_sum,
+            "treasure_sum": self.matrix.treasure_sum,
             "best_treasure": self.best_treasure,
-            "selected_ids": self.matrix.get_selected_ids()
+            "selected_ids": list(self.matrix.get_selected_ids())
         }
 
 
