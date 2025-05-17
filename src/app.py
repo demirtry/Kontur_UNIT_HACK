@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, render_template, request, session
-from db_func import create_table_users, add_user
+from db_func import create_table_users, add_user, get_top_leaders
 from game.game import Game
 import secrets
 from flask import jsonify
@@ -93,6 +93,13 @@ def get_items():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+@app.route("/leaderboard")
+def leaderboard():
+    leaders = get_top_leaders()
+    return render_template("leaderboard.html",
+                         title="Таблица лидеров",
+                         leaders=leaders)
 
 if __name__ == '__main__':
     app.run(debug=True)
