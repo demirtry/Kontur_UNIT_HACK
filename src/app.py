@@ -68,6 +68,19 @@ def process_click(cell_id):
     return jsonify(values)
 
 
+@app.route('/intro1')
+def go_to_intro1():
+    return render_template('intro_pages/intro1.html')
+
+@app.route('/intro2')
+def go_to_intro2():
+    return render_template('intro_pages/intro2.html')
+
+@app.route('/intro3')
+def go_to_intro3():
+    return render_template('intro_pages/intro3.html')
+
+
 @app.route('/game')
 def start_game():
     user_id = get_user_id_this_session()
