@@ -9,6 +9,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+# Добавить возврат на фронт id пользователя и кодового слова. Убрать возврат страниц
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -24,6 +25,12 @@ def register():
 
         return render_template('registration_success.html', user_id=user_id, secret_code=secret_code)
     return render_template('register.html')
+
+@app.route('/api/init-matrix', methods=['POST'])
+def select_cell():
+    #Возвращает матрицу с заполнеными значениями
+    pass
+
 
 @app.route('/api/select-cell', methods=['POST'])
 def select_cell():
