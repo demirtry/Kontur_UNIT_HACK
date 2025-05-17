@@ -219,33 +219,33 @@
 
 <script>
   // Sample items data - in real app this would come from your backend
-  const sampleItems = [
-    { weight: 10, treasure: 20 },
-    { weight: 5, treasure: 15 },
-    { weight: 3, treasure: 40 },
-    { weight: 3, treasure: 40 },
-    { weight: 9, treasure: 46 },
-    { weight: 6, treasure: 47 },
-    { weight: 10, treasure: 35 },
-    { weight: 10, treasure: 35 },
-    { weight: 19, treasure: 10 },
-    { weight: 18, treasure: 28 },
-    { weight: 10, treasure: 7 },
-    { weight: 19, treasure: 25 },
-    { weight: 9, treasure: 50 },
-    { weight: 8, treasure: 47 },
-    { weight: 9, treasure: 10 },
-    { weight: 1, treasure: 28 },
-    { weight: 20, treasure: 27 },
-    { weight: 10, treasure: 14 },
-    { weight: 17, treasure: 39 },
-    { weight: 6, treasure: 44 },
-    { weight: 10, treasure: 42 },
-    { weight: 13, treasure: 43 },
-    { weight: 8, treasure: 5 },
-    { weight: 12, treasure: 11 },
-    { weight: 18, treasure: 41 }
-  ];
+  // const items = [
+  //   { weight: 10, treasure: 20 },
+  //   { weight: 5, treasure: 15 },
+  //   { weight: 3, treasure: 40 },
+  //   { weight: 3, treasure: 40 },
+  //   { weight: 9, treasure: 46 },
+  //   { weight: 6, treasure: 47 },
+  //   { weight: 10, treasure: 35 },
+  //   { weight: 10, treasure: 35 },
+  //   { weight: 19, treasure: 10 },
+  //   { weight: 18, treasure: 28 },
+  //   { weight: 10, treasure: 7 },
+  //   { weight: 19, treasure: 25 },
+  //   { weight: 9, treasure: 50 },
+  //   { weight: 8, treasure: 47 },
+  //   { weight: 9, treasure: 10 },
+  //   { weight: 1, treasure: 28 },
+  //   { weight: 20, treasure: 27 },
+  //   { weight: 10, treasure: 14 },
+  //   { weight: 17, treasure: 39 },
+  //   { weight: 6, treasure: 44 },
+  //   { weight: 10, treasure: 42 },
+  //   { weight: 13, treasure: 43 },
+  //   { weight: 8, treasure: 5 },
+  //   { weight: 12, treasure: 11 },
+  //   { weight: 18, treasure: 41 }
+  // ];
 
   // Game state
   let selectedCells = new Set();
@@ -253,29 +253,81 @@
   let currentTreasure = 0;
   let bestTreasure = 0;
   const maxWeight = 50;
+  let items = []
+
+  async function loadItems() {
+    try {
+      const response = await fetch('/api/get_items');
+      if (!response.ok) {
+        throw new Error('Failed to load items');
+      }
+      const itemsData = await response.json();
+
+      if (itemsData.error) {
+        throw new Error(itemsData.error);
+      }
+
+      return itemsData;
+    } catch (error) {
+      console.error('Error loading items:', error);
+      alert('Не удалось загрузить предметы. Пожалуйста, попробуйте позже.');
+      throw error;
+    }
+  }
+
+  async function initGame() {
+    try {
+      items = await loadItems();
+      const gameGrid = document.getElementById('game-grid');
+      gameGrid.innerHTML = '';
+
+      items.forEach((item, index) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.id = index;
+
+        cell.innerHTML = `
+                <div class="cell-icon">💰</div>
+                <div class="cell-weight">Вес: ${item.weight}</div>
+                <div class="cell-treasure">Ценность: ${item.treasure}</div>
+            `;
+
+        cell.addEventListener('click', () => handleCellClick(index, item));
+        gameGrid.appendChild(cell);
+      });
+
+      updateStats();
+    } catch (error) {
+      document.getElementById('game-grid').innerHTML = `
+            <div class="error-message">
+                Не удалось загрузить предметы. Пожалуйста, проверьте файл items.json
+            </div>
+        `;
+    }
+  }
 
   // Initialize game
-  function initGame() {
-    const gameGrid = document.getElementById('game-grid');
-    gameGrid.innerHTML = '';
-
-    sampleItems.forEach((item, index) => {
-      const cell = document.createElement('div');
-      cell.className = 'cell';
-      cell.dataset.id = index;
-
-      cell.innerHTML = `
-                    <div class="cell-icon">💰</div>
-                    <div class="cell-weight">Вес: ${item.weight}</div>
-                    <div class="cell-treasure">Ценность: ${item.treasure}</div>
-                `;
-
-      cell.addEventListener('click', () => handleCellClick(index, item));
-      gameGrid.appendChild(cell);
-    });
-
-    updateStats();
-  }
+  // function initGame() {
+  //   const gameGrid = document.getElementById('game-grid');
+  //   gameGrid.innerHTML = '';
+  //
+  //   items.forEach((item, index) => {
+  //     const cell = document.createElement('div');
+  //     cell.className = 'cell';
+  //     cell.dataset.id = index;
+  //
+  //     cell.innerHTML = `
+  //                   <div class="cell-icon">💰</div>
+  //                   <div class="cell-weight">Вес: ${item.weight}</div>
+  //                   <div class="cell-treasure">Ценность: ${item.treasure}</div>
+  //               `;
+  //
+  //     cell.addEventListener('click', () => handleCellClick(index, item));
+  //     gameGrid.appendChild(cell);
+  //   });
+  //
+  //   updateStats();
+  // }
 
   // Handle cell click
   function handleCellClick(index, item) {

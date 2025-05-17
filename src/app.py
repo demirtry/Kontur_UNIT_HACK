@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, request, session
 from db_func import create_table_users, add_user
 from game.game import Game
@@ -83,6 +85,18 @@ def start_game():
                            treasure_sum=values['treasure_sum'],
                            weight_sum=values['weight_sum'],
                            best_treasure=values['best_treasure'])
+
+@app.route('/api/get_items')
+def get_items():
+    try:
+        with open('game/items.json', 'r', encoding='utf-8') as f:
+            items_data = json.load(f)
+
+        # Преобразуем объект в массив
+        items_array = [items_data[str(i)] for i in range(len(items_data))]
+        return jsonify(items_array)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
