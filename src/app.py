@@ -51,22 +51,20 @@ def register():
     return render_template('register.html')
 
 
-# @app.route('/api/select-cell', methods=['POST'])
-# def select_cell():
-#     public_id = session.get('public_id')
-#     if not public_id:
+# @app.route('/api/process_click/<int:cell_index>', methods=['POST'])
+# def process_click(cell_id):
+#     user_id = session.get('user_id')
+#     if not user_id:
 #         return jsonify({"error": "Unauthorized"}), 401
 #
-#     data = request.get_json()
-#     cell_index = data.get('index')
-#     weight = data.get('weight')
-#     value = data.get('value')
+#     game = load_game(user_id)
+#
 #
 #     selected_cells = session.get('selected_cells', [])
 #     current_weight = session.get('current_weight', 0)
 #     current_value = session.get('current_value', 0)
 #
-#     if cell_index in selected_cells:
+#     if cell_id in selected_cells:
 #         return jsonify({
 #             "selected_cells": selected_cells,
 #             "current_weight": current_weight,
@@ -77,7 +75,7 @@ def register():
 #     if new_weight > GLOBAL_MAX_WEIGHT:
 #         return jsonify({"error": "Превышен максимальный вес"}), 400
 #
-#     selected_cells.append(cell_index)
+#     selected_cells.append(cell_id)
 #     current_weight += weight
 #     current_value += value
 #
