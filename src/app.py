@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, session
 from db_func import create_table_users, add_user
 from game.game import Game
 import secrets
-import json
 from flask import jsonify
 
 
@@ -65,52 +64,6 @@ def process_click(cell_id):
     values['weight_is_lower'] = weight_is_lower
 
     return jsonify(values)
-#
-#
-# @app.route('/api/finish', methods=['POST'])
-# def finish():
-#     public_id = session.get('public_id')
-#     if not public_id:
-#         return jsonify({"error": "Unauthorized"}), 401
-#
-#     final_value = session.get('current_value', 0)
-#
-#     db = get_db()
-#     cur = db.cursor()
-#     cur.execute("UPDATE users SET score = ?, has_played = 1 WHERE public_id = ?",
-#                 (final_value, public_id))
-#     db.commit()
-#     db.close()
-#
-#     return jsonify({"success": True})
-#
-#
-# @app.route('/game-data')
-# def game_data():
-#     if 'public_id' not in session:
-#         return jsonify({"error": "Unauthorized"}), 401
-#
-#     public_id = session['public_id']
-#     db = get_db()
-#     cur = db.cursor()
-#     cur.execute("""
-#         SELECT selected_cells, current_weight, current_value
-#         FROM users
-#         WHERE public_id = ?
-#     """, (public_id,))
-#     result = cur.fetchone()
-#     db.close()
-#
-#     if not result:
-#         return jsonify({"error": "Data not found"}), 404
-#
-#     return jsonify({
-#         "matrix": GLOBAL_MATRIX,
-#         "max_weight": GLOBAL_MAX_WEIGHT,
-#         "selected_cells": json.loads(result[0]),
-#         "current_weight": result[1],
-#         "current_value": result[2]
-#     })
 
 
 @app.route('/game')
@@ -124,13 +77,6 @@ def start_game():
     values = game.get_values()
     values['weight_is_lower'] = False
     # return jsonify(values)
-
-    # return render_template('game.html',
-    #                        backpack_size=values['backpack_size'],
-    #                        treasure_sum=values['treasure_sum'],
-    #                        selected_cells=json.dumps(values['selected_ids']),
-    #                        weight_sum=values['weight_sum'],
-    #                        best_treasure=values['best_treasure'])
 
     return render_template('game.html',
                            backpack_size=values['backpack_size'],
