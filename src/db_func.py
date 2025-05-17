@@ -13,13 +13,21 @@ def create_table_users():
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS users (
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL UNIQUE,
         secret_code TEXT NOT NULL UNIQUE,
         score INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         '''
     )
+    conn.commit()
+    conn.close()
+
+
+def add_user(user_id, secret_code):
+    conn = get_db_connection()
+    conn.execute('INSERT INTO users (user_id, secret_code) VALUES (?, ?)',
+                 (user_id, secret_code))
     conn.commit()
     conn.close()
 

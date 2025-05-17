@@ -1,46 +1,51 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from db_func import get_db_connection, create_table_users
+from db_func import get_db_connection, create_table_users, add_user
 from game.game import Game
 import uuid
 import secrets
+from flask import jsonify
+
 
 app = Flask(__name__)
+app.secret_key = "AAAAAAAAAA"
+secret_codes = set()
+user_ids = set()
+
+games = dict()
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-def load_game():
-    if 'game_data' not in session:
-        session['game_data'] = {
-            "selected_cells": [],
-            "current_weight": 0,
-            "current_value": 0,
-            "has_played": False
-        }
-    data = session['game_data']
-    game = Game(GLOBAL_MATRIX)
-    game.selected_cells = data["selected_cells"]
-    game.current_weight = data["current_weight"]
-    game.current_value = data["current_value"]
-    game.has_played = data["has_played"]
-    return game
+def get_user_id_this_session():
+    user_id = session["user_id"]
+    return user_id
 
+def load_game(user_id):
+    if games.get(user_id) is None:
+        games[user_id] = Game()
+
+    return games[user_id]
 
 # Добавить возврат на фронт id пользователя и кодового слова. Убрать возврат страниц
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        user_id = str(uuid.uuid4())[:8]
         secret_code = secrets.token_hex(4)
+        while secret_code in secret_codes:
+            secret_code = secrets.token_hex(4)
+        secret_codes.add(secret_code)
+
+        user_id = secrets.token_hex(4)
+        while user_id in user_ids:
+            user_id = secrets.token_hex(4)
+        user_ids.add(user_id)
 
         create_table_users()
-        conn = get_db_connection()
-        conn.execute('INSERT INTO users (secret_code) VALUES (?)',
-                     (secret_code,))
-        conn.commit()
-        conn.close()
+        add_user(user_id, secret_code)
+        session["user_id"] = user_id
+        print(session)
 
         return render_template('registration_success.html', user_id=user_id, secret_code=secret_code)
     return render_template('register.html')
@@ -131,31 +136,31 @@ def register():
 #         "current_weight": result[1],
 #         "current_value": result[2]
 #     })
-#
-#
-# @app.route('/game')
-# def game():
-#     if 'public_id' not in session:
-#         return redirect(url_for('index'))
-#
-#     if session.get('has_played', False):
-#         return "Вы уже прошли игру."
-#
-#     if 'selected_cells' not in session:
-#         session['selected_cells'] = []
-#         session['current_weight'] = 0
-#         session['current_value'] = 0
-#
-#     selected_cells = session['selected_cells']
-#     current_weight = session['current_weight']
-#     current_value = session['current_value']
-#
-#     return render_template('game_vue.html',
-#                            matrix=GLOBAL_MATRIX,
-#                            max_weight=GLOBAL_MAX_WEIGHT,
-#                            selected_cells=json.dumps(selected_cells),
-#                            current_weight=current_weight,
-#                            current_value=current_value)
+
+
+@app.route('/start_game')
+def start_game():
+    user_id = get_user_id_this_session()
+    game = load_game(user_id)
+    """
+    текущий скор, индексы ячеек которые выбраны, размер рюкзака, максимальный результат
+    """
+
+    values = {
+        "backpack_size": game.backpack_size,
+        "treasure_sum": game.matrix.treasure_sum,
+        "best_treasure": game.best_treasure,
+        "selected_ids": game.matrix.get_selected_ids()
+    }
+    print("отработало")
+    return jsonify(values)
+
+    # return render_template('game_vue.html',
+    #                        matrix=game.matrix,
+    #                        max_weight=game.backpack_size,
+    #                        selected_cells=json.dumps(selected_cells),
+    #                        current_weight=current_weight,
+    #                        current_value=current_value)
 
 
 if __name__ == '__main__':
