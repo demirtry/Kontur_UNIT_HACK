@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-ITEMS_FILE = Path('game/items.json')
+ITEMS_FILE = Path('src/game/items.json')
 
 
 def load_items():
