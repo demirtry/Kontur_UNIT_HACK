@@ -187,8 +187,25 @@ h2::after {
 .finish-btn, #finish-leader {
     display: none;
 }
+.game-ended .cell {
+    pointer-events: none;
+    opacity: 0.7;
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: #e0e0e0 !important;
+}
+
+.game-ended .cell.selected {
+    opacity: 1;
+    border-color: #9b59b6 !important;
+    box-shadow: 0 0 10px rgba(155, 89, 182, 0.3) !important;
+}
+
+.game-ended .finish-btn-container {
+    display: flex;
+}
 
 .game-ended .finish-btn,
 .game-ended #finish-leader {
-    display: block;
+    display: inline-block;
 }

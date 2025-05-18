@@ -19,6 +19,7 @@ let currentTreasure = initialGameState.currentTreasure;
 let bestTreasure = initialGameState.bestTreasure;
 const maxWeight = initialGameState.backpackSize;
 let items = [];
+let isGameEnded = false;
 
 async function loadItems() {
     const savedState = localStorage.getItem('knapsackGameState');
@@ -88,7 +89,6 @@ async function initGame() {
         const gameGrid = document.getElementById('game-grid');
         gameGrid.innerHTML = '';
 
-        // Теперь items - это уже перемешанный массив
         items.forEach((item, index) => {
             const cell = document.createElement('div');
             cell.className = 'cell';
@@ -119,6 +119,8 @@ async function initGame() {
 }
 
 function handleCellClick(index, item) {
+    if (isGameEnded) return;
+
     if (selectedCells.has(index)) {
         selectedCells.delete(index);
         currentWeight -= item.weight;
@@ -185,10 +187,10 @@ async function endGame() {
 
 document.getElementById('finish-btn').addEventListener('click', async () => {
     try {
+        isGameEnded = true;
         await endGame();
         localStorage.removeItem('knapsackGameState');
         location.reload();
-        isGameEnded = true
     } catch (error) {
         alert('Ошибка при завершении игры: ' + error.message);
     }
@@ -197,11 +199,11 @@ document.getElementById('finish-btn').addEventListener('click', async () => {
 document.addEventListener('DOMContentLoaded', () => {
     const timeLeft = loadGameState();
     if (timeLeft <= 0) {
+        isGameEnded = true;
         document.querySelector('.game-container').classList.add('game-ended');
-    } else {
-        initGame();
-        startTimer();
     }
+    initGame();
+    startTimer();
 });
 
 function startTimer() {
@@ -216,6 +218,7 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearInterval(timer);
+            isGameEnded = true; // Устанавливаем флаг окончания игры
             gameContainer.classList.add('game-ended');
             endGame().then(() => {
                 alert(`Время вышло!\nВаш лучший счёт: ${bestTreasure}`);
