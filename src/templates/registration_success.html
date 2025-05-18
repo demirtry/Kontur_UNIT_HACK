@@ -27,7 +27,19 @@
             </div>
         </div>
 
+        <div class="highlight-notification">
+    📸       <strong>Сделайте скриншот этой страницы!</strong><br>
+            <small>Ваш ID и кодовое слово не сохранятся автоматически</small>
+        </div>
+        <button type="button" class="copy-button"
+                data-user-id="{{ user_id }}"
+                data-secret-code="{{ secret_code }}"
+                onclick="copyUserInfo(this)">
+            📋 Скопировать ID и кодовое слово
+        </button>
+
         <a href="intro1" class="nav-button">Начать игру</a>
     </div>
 </body>
+<script src="../static/clipboard.js"></script>
 </html>
