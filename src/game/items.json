@@ -1,102 +1,127 @@
 {
   "0": {
     "treasure": 20,
-    "weight": 10
+    "weight": 10,
+    "type": "atom"
   },
   "1": {
     "treasure": 15,
-    "weight": 5
+    "weight": 5,
+    "type": "angular"
   },
   "2": {
     "treasure": 40,
-    "weight": 3
+    "weight": 3,
+    "type": "audition"
   },
   "3": {
     "treasure": 40,
-    "weight": 3
+    "weight": 3,
+    "type": "blender"
   },
   "4": {
     "treasure": 46,
-    "weight": 9
+    "weight": 9,
+    "type": "c"
   },
   "5": {
     "treasure": 47,
-    "weight": 6
+    "weight": 6,
+    "type": "cpp"
   },
   "6": {
     "treasure": 35,
-    "weight": 10
+    "weight": 10,
+    "type": "csharp"
   },
   "7": {
     "treasure": 35,
-    "weight": 10
+    "weight": 10,
+    "type": "css"
   },
   "8": {
     "treasure": 10,
-    "weight": 19
+    "weight": 19,
+    "type": "django"
   },
   "9": {
     "treasure": 28,
-    "weight": 18
+    "weight": 18,
+    "type": "docker"
   },
   "10": {
     "treasure": 7,
-    "weight": 10
+    "weight": 10,
+    "type": "dotnet"
   },
   "11": {
     "treasure": 25,
-    "weight": 19
+    "weight": 19,
+    "type": "electron"
   },
   "12": {
     "treasure": 50,
-    "weight": 9
+    "weight": 9,
+    "type": "fortran"
   },
   "13": {
     "treasure": 47,
-    "weight": 8
+    "weight": 8,
+    "type": "github"
   },
   "14": {
     "treasure": 10,
-    "weight": 9
+    "weight": 9,
+    "type": "golang"
   },
   "15": {
     "treasure": 28,
-    "weight": 1
+    "weight": 1,
+    "type": "java"
   },
   "16": {
     "treasure": 27,
-    "weight": 20
+    "weight": 20,
+    "type": "linux"
   },
   "17": {
     "treasure": 14,
-    "weight": 10
+    "weight": 10,
+    "type": "postgres"
   },
   "18": {
     "treasure": 39,
-    "weight": 17
+    "weight": 17,
+    "type": "python"
   },
   "19": {
     "treasure": 44,
-    "weight": 6
+    "weight": 6,
+    "type": "rabbit"
   },
   "20": {
     "treasure": 42,
-    "weight": 10
+    "weight": 10,
+    "type": "windows"
   },
   "21": {
     "treasure": 43,
-    "weight": 13
+    "weight": 13,
+    "type": "php"
   },
   "22": {
     "treasure": 5,
-    "weight": 8
+    "weight": 8,
+    "type": "gitlab"
   },
   "23": {
     "treasure": 11,
-    "weight": 12
+    "weight": 12,
+    "type": "bash"
   },
   "24": {
     "treasure": 41,
-    "weight": 18
+    "weight": 18,
+    "type": "spring"
   }
 }

@@ -104,19 +104,49 @@ function loadGameState() {
     return 120;
 }
 
+const imageCache = {};
+
+async function getItemImage(item) {
+    const basePath = '/static/icons';
+    const defaultImage = `${basePath}/default.png`;
+
+    const type = item.type || 'default';
+
+    if (imageCache[type] !== undefined) {
+        return imageCache[type];
+    }
+
+    const imagePath = `${basePath}/${type.toLowerCase()}.png`;
+
+    try {
+        const response = await fetch(imagePath, { method: 'HEAD' });
+        if (response.ok) {
+            imageCache[type] = imagePath;
+            return imagePath;
+        }
+    } catch (e) {
+        console.warn(`Image not found for type ${type}:`, e);
+    }
+
+    imageCache[type] = defaultImage;
+    return defaultImage;
+}
+
 async function initGame() {
     try {
         items = await loadItems();
         const gameGrid = document.getElementById('game-grid');
         gameGrid.innerHTML = '';
 
-        items.forEach((item, index) => {
+        for (const [index, item] of items.entries()) {
             const cell = document.createElement('div');
             cell.className = 'cell';
             cell.dataset.id = index;
 
+            const imagePath = await getItemImage(item);
+
             cell.innerHTML = `
-                <div class="cell-icon">💰</div>
+                <div class="cell-icon" style="background-image: url('${imagePath}')"></div>
                 <div class="cell-weight">Вес: ${item.weight}</div>
                 <div class="cell-treasure">Ценность: ${item.treasure}</div>
             `;
@@ -127,7 +157,7 @@ async function initGame() {
             if (selectedCells.has(index)) {
                 cell.classList.add('selected');
             }
-        });
+        }
 
         updateStats();
     } catch (error) {
@@ -138,6 +168,7 @@ async function initGame() {
         `;
     }
 }
+
 
 function handleCellClick(index, item) {
     if (isGameEnded) return;
