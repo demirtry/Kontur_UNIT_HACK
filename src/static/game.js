@@ -57,14 +57,23 @@ function shuffleArray(array) {
     }
 }
 
+
 function saveGameState() {
+    let timeLeft = 120;
+    if (!isGameEnded) {
+        const timeText = document.getElementById('time-left').textContent;
+        const [minutes, seconds] = timeText.split(':').map(Number);
+        timeLeft = minutes * 60 + seconds;
+
+        if (timeLeft < 0) timeLeft = 0;
+    }
+
     const gameState = {
         selectedCells: Array.from(selectedCells),
         currentWeight,
         currentTreasure,
         bestTreasure,
-        timeLeft: parseInt(document.getElementById('time-left').textContent.split(':')[0]) * 60 +
-            parseInt(document.getElementById('time-left').textContent.split(':')[1]),
+        timeLeft,
         items
     };
     localStorage.setItem('knapsackGameState', JSON.stringify(gameState));
@@ -73,12 +82,24 @@ function saveGameState() {
 function loadGameState() {
     const savedState = localStorage.getItem('knapsackGameState');
     if (savedState) {
-        const state = JSON.parse(savedState);
-        selectedCells = new Set(state.selectedCells);
-        currentWeight = state.currentWeight;
-        currentTreasure = state.currentTreasure;
-        bestTreasure = state.bestTreasure;
-        return state.timeLeft;
+        try {
+            const state = JSON.parse(savedState);
+            selectedCells = new Set(state.selectedCells || []);
+            currentWeight = state.currentWeight || 0;
+            currentTreasure = state.currentTreasure || 0;
+            bestTreasure = state.bestTreasure || 0;
+
+            let timeLeft = state.timeLeft || 120;
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                isGameEnded = true;
+            }
+
+            return timeLeft;
+        } catch (e) {
+            console.error('Error parsing saved state:', e);
+            return 120;
+        }
     }
     return 120;
 }
@@ -208,6 +229,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function startTimer() {
     let timeLeft = loadGameState();
+
+    if (timeLeft <= 0) {
+        timeLeft = 0;
+        isGameEnded = true;
+        document.querySelector('.game-container').classList.add('game-ended');
+        return;
+    }
+
     const timerElement = document.getElementById('time-left');
     const gameContainer = document.querySelector('.game-container');
     updateTimerDisplay();
@@ -218,12 +247,13 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearInterval(timer);
-            isGameEnded = true; // Устанавливаем флаг окончания игры
+            isGameEnded = true;
             gameContainer.classList.add('game-ended');
             endGame().then(() => {
                 alert(`Время вышло!\nВаш лучший счёт: ${bestTreasure}`);
                 localStorage.removeItem('knapsackGameState');
             }).catch(error => {
+                console.error('Error ending game:', error);
                 alert('Ошибка при сохранении результата: ' + error.message);
             });
         }
@@ -232,8 +262,9 @@ function startTimer() {
     }, 1000);
 
     function updateTimerDisplay() {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
+        const displayTime = Math.max(0, timeLeft);
+        const minutes = Math.floor(displayTime / 60);
+        const seconds = displayTime % 60;
         timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 }
