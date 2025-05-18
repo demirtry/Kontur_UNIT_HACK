@@ -89,6 +89,7 @@ class Game:
             "selected_ids": list(self.matrix.get_selected_ids())
         }
 
+
 if __name__ == "__main__":
     items = load_items()
     print(items)

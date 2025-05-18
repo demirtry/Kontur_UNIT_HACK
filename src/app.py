@@ -151,7 +151,6 @@ def leaderboard():
                            leaders=leaders)
 
 
-# Убираем app.run() для деплоя
 # if __name__ == '__main__':
 #     create_table_users()
 #     app.run(debug=True)
