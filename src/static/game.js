@@ -89,7 +89,7 @@ function loadGameState() {
             currentTreasure = state.currentTreasure || 0;
             bestTreasure = state.bestTreasure || 0;
 
-            let timeLeft = state.timeLeft || 120;
+            let timeLeft = state.timeLeft || 180;
             if (timeLeft <= 0) {
                 timeLeft = 0;
                 isGameEnded = true;
@@ -98,10 +98,10 @@ function loadGameState() {
             return timeLeft;
         } catch (e) {
             console.error('Error parsing saved state:', e);
-            return 120;
+            return 180;
         }
     }
-    return 120;
+    return 180;
 }
 
 const imageCache = {};
