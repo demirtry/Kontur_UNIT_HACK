@@ -90,7 +90,7 @@ h1::after {
     width: 100%;
     max-width: 250px;
     margin: 20px auto 0;
-    display: inline-block;
+    display: block;
 }
 
 .nav-button:hover {
