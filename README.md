@@ -3,7 +3,7 @@
 **Интерактивная мини-игра на основе классической задачи о рюкзаке**  
 *Решение кейса от компании Контур для школьников и студентов*
 
-![Game Screenshot](src/static/favicon/bagpack.png) <!-- Добавьте реальный скриншот -->
+![Game Screenshot](src/static/favicon/bagpack.png) ![website_qr](https://github.com/user-attachments/assets/f7a5dfb2-3a10-427d-937f-8400bb37c58d) ![Game Screenshot](src/static/favicon/bagpack.png)
 
 ## 🎮 О проекте
 
