@@ -3,8 +3,8 @@ import secrets
 
 from flask import Flask, render_template, request, session, make_response, jsonify
 
-from .db_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
-from .game.game import Game
+from db_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
+from game.game import Game
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -117,7 +117,7 @@ def start_game():
 @app.route('/api/get_items')
 def get_items():
     try:
-        with open('game/items.json', 'r', encoding='utf-8') as f:
+        with open('src/game/items.json', 'r', encoding='utf-8') as f:
             items_data = json.load(f)
         items_array = [items_data[str(i)] for i in range(len(items_data))]
         return jsonify(items_array)
