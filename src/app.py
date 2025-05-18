@@ -3,8 +3,8 @@ import secrets
 
 from flask import Flask, render_template, request, session, make_response, jsonify
 
-from db_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
-from game.game import Game
+from .db_postgres_funcs import create_table_users, add_user, update_user_score, get_top_leaders, check_user_exist
+from .game.game import Game
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -152,9 +152,6 @@ def leaderboard():
 
 
 # Убираем app.run() для деплоя
-if __name__ == '__main__':
-    create_table_users()
-    app.run(debug=True)
-
-
-
+# if __name__ == '__main__':
+#     create_table_users()
+#     app.run(debug=True)
